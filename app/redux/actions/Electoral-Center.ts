@@ -13,7 +13,7 @@ const getListElectCenter = () => async (dispatch: any, getState: any) => {
             const { user } = getState()
             dispatch(configStage({ loading: true }))
             const resp = await get(`electoral-center/list`, user.auth.token)
-            resolve(resp.data)
+            resolve(resp.data.reverse())
         } catch (error: any) {
             errorResponse(error)
             reject(error)

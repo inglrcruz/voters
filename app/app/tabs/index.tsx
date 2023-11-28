@@ -81,7 +81,7 @@ const PollingStationsLayout = ({ voters, getTotal, getAllByCode }: PollingStatio
                           <TouchableHighlight style={{ marginTop: 3 }} underlayColor="transparent" onPress={() => handleView(item)}>
                             <View style={[Btn.baseSm, { backgroundColor: "#6c757d" }]}>
                               <Text style={[Btn.textSm, { color: "white" }]}>
-                                <FontAwesome5 size={14} name="list-alt" />&nbsp;&nbsp;Ver
+                                <FontAwesome5 size={14} name="list-alt" />
                               </Text>
                             </View>
                           </TouchableHighlight>

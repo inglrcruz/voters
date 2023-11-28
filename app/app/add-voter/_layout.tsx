@@ -7,6 +7,7 @@ import ElectoralCenterAction from '../../redux/actions/Electoral-Center'
 import { router } from 'expo-router'
 import { Container, TextFiled } from '../../constants/Styles'
 import { Button, Text, View } from '../../components/Themed'
+import { confirmAlert } from "../../constants/Alert"
 
 type FrmTable = {
     full_name?: string
@@ -71,8 +72,20 @@ const AddVoterLayout = ({ setVoter, getListElectCenter }: VoteProps) => {
             if ((typeof form[field] === "string" && !form[field].trim()) || !form[field]) newErrors[field] = `* ${ERROR_MESSAGES[field]} es requerido.`;
         }
         if (!Object.keys(newErrors).length) {
-            await setVoter(frmData)
-            router.replace('/tabs')
+            confirmAlert("Confirmar datos", `
+            Nombre Completo:
+            Cédula:
+            Dirección:
+            Mesa Electoral:
+            `, [{
+                text: 'Confirmar',
+                onPress: async () => {
+                    await setVoter(frmData)
+                    router.replace('/tabs')
+                }
+            }, {
+                text: 'Cancelar'
+            }])
         }
         setErrors(newErrors)
     }

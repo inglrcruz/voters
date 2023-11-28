@@ -72,8 +72,9 @@ const getAllByCode = (code: string) => async (dispatch: any, getState: any) => {
             const { user } = getState()
             dispatch(configStage({ loading: true }))
             const resp = await get(`voter/list/${code}`, user.auth.token)
-            dispatch(votersStage({ details: resp.data }))
-            resolve(resp.data)
+            const list = resp.data.reverse()
+            dispatch(votersStage({ details: list }))
+            resolve(list)
         } catch (error: any) {
             errorResponse(error)
             reject(error)
