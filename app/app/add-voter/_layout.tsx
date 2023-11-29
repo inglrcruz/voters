@@ -72,20 +72,8 @@ const AddVoterLayout = ({ setVoter, getListElectCenter }: VoteProps) => {
             if ((typeof form[field] === "string" && !form[field].trim()) || !form[field]) newErrors[field] = `* ${ERROR_MESSAGES[field]} es requerido.`;
         }
         if (!Object.keys(newErrors).length) {
-            confirmAlert("Confirmar datos", `
-            Nombre Completo:
-            Cédula:
-            Dirección:
-            Mesa Electoral:
-            `, [{
-                text: 'Confirmar',
-                onPress: async () => {
-                    await setVoter(frmData)
-                    router.replace('/tabs')
-                }
-            }, {
-                text: 'Cancelar'
-            }])
+            await setVoter(frmData)
+            router.replace('/tabs')
         }
         setErrors(newErrors)
     }

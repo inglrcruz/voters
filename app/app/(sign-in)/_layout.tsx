@@ -104,7 +104,7 @@ const SignInLayout = ({ user, setAuth, setSignOff }: AuthProps) => {
                         secureTextEntry={true}
                         style={TextFiled.textInput}
                         value={frmData.password}
-                        placeholder="Escribe el nombre de la votante..."
+                        placeholder="Escribe la contraseña..."
                         onChangeText={(txt) => handleChange(txt, 'password')}
                     />
                     {errors.password && <Text style={TextFiled.textError}>{errors.password}</Text>}

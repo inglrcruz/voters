@@ -16,7 +16,7 @@ type UserProps = {
 }
 
 const TabUsersScreen = ({ getList, setRemove, user }: UserProps) => {
-  
+
   /**
    * useEffect to fetch and set the list on component mount.
    * This effect runs only once, equivalent to componentDidMount.
@@ -41,9 +41,9 @@ const TabUsersScreen = ({ getList, setRemove, user }: UserProps) => {
   return (
     <>
       <View style={Container.base}>
-        { user.list.length > 0 && <Text style={TextLabel.titleHeader}>Lista de usuario</Text> }
+        {user.list.length > 0 && <Text style={TextLabel.titleHeader}>Lista de usuario</Text>}
         <ScrollView horizontal={false} style={Container.scroll}>
-          { user.list.length === 0 && <NoRecords /> }
+          {user.list.length === 0 && <NoRecords />}
           {
             user.list && user.list.map((item: any, key: number) => {
               return (
@@ -53,11 +53,11 @@ const TabUsersScreen = ({ getList, setRemove, user }: UserProps) => {
                       <Text style={TextLabel.title}>Nombre</Text>
                       <Text style={TextLabel.desc}>{item.name}</Text>
                     </View>
-                    <View style={{ width: "30%" }}>
+                    <View style={{ width: "25%" }}>
                       <Text style={TextLabel.title}>Usuario</Text>
                       <Text style={TextLabel.desc}>{item.username}</Text>
                     </View>
-                    <View style={{ alignItems: "center", width: "20%" }}>
+                    <View style={{ alignItems: "center", width: "25%" }}>
                       <Text style={TextLabel.title}>Rol</Text>
                       <Text style={TextLabel.desc}>{getRole(item.role)}</Text>
                     </View>
