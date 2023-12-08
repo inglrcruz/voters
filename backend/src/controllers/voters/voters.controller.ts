@@ -1,9 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { VotersService } from '../../services/voters/voters.service';
-import { CreateVoterDto, UpdateVoterDto } from '../../entities/dtos/voters';
-import { Auth, GetUser } from 'src/decorators';
-import { User } from 'src/entities/user.entity';
-import { Types } from 'mongoose';
+import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common'
+import { VotersService } from '../../services/voters/voters.service'
+import { CreateVoterDto, UpdateVoterDto } from '../../entities/dtos/voters'
+import { Auth, GetUser } from 'src/decorators'
+import { User } from 'src/entities/user.entity'
+import { Types } from 'mongoose'
 
 @Controller('voter')
 @Auth()
@@ -29,7 +29,7 @@ export class VotersController {
    */
   @Get('list/:code')
   async findAll(@Param('code') code: string) {
-    return await this.vtSrv.findAll(code);
+    return await this.vtSrv.findAll(code)
   }
 
   /**
@@ -40,7 +40,18 @@ export class VotersController {
    */
   @Get('total')
   async findTotal(@GetUser() usr: User) {
-    return await this.vtSrv.findTotal(usr._id, usr.role);
+    return await this.vtSrv.findTotal(usr._id, usr.role)
+  }
+
+  /**
+   * Retrieves the total value associated with a user identified by their unique ID.
+   * 
+   * @param uid The unique user ID for which the total value is to be fetched.
+   * @returns A promise that resolves to the total value corresponding to the specified user ID.
+   */
+  @Get('total/:uid')
+  async findTotalByUsr(@Param('uid') uid: string) {
+    return await this.vtSrv.findTotalByUsr(uid)
   }
 
   /**
@@ -51,7 +62,7 @@ export class VotersController {
    */
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return await this.vtSrv.findOne(id);
+    return await this.vtSrv.findOne(id)
   }
 
   /**
@@ -62,7 +73,7 @@ export class VotersController {
    */
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updVtDto: UpdateVoterDto) {
-    await this.vtSrv.update(id, updVtDto);
+    await this.vtSrv.update(id, updVtDto)
   }
 
   /**
@@ -72,6 +83,6 @@ export class VotersController {
    */
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    await this.vtSrv.remove(id);
+    await this.vtSrv.remove(id)
   }
 }

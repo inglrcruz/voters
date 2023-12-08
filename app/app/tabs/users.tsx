@@ -6,8 +6,10 @@ import { ScrollView, TouchableHighlight } from "react-native"
 import { Btn, Container, TextLabel } from "../../constants/Styles"
 import { Text, View } from "../../components/Themed"
 import { confirmAlert } from "../../constants/Alert"
+import { router } from 'expo-router'
 import { getRole, viewDate } from "../../constants/Utilities"
 import NoRecords from "../../components/NoRecords"
+import { colorDanger, colorSecondary } from "../../constants/Colors"
 
 type UserProps = {
   user: any;
@@ -38,6 +40,19 @@ const TabUsersScreen = ({ getList, setRemove, user }: UserProps) => {
     }])
   }
 
+  const handleEdit = async (item: any) => {
+
+  }
+
+  /**
+   * Navigates to the "/result-by-user" route, passing user information as parameters.
+   * 
+   * @param user - An object representing user information, typically containing '_id' and 'name'.
+   */
+  const handleSeeList = (user: any) => {
+    router.push({ pathname: "/result-by-user", params: { uid: user._id, name: user.name } })
+  }
+
   return (
     <>
       <View style={Container.base}>
@@ -48,30 +63,36 @@ const TabUsersScreen = ({ getList, setRemove, user }: UserProps) => {
             user.list && user.list.map((item: any, key: number) => {
               return (
                 <View style={Container.people} key={key}>
-                  <View style={{ flexDirection: 'row' }}>
-                    <View style={{ width: "50%" }}>
-                      <Text style={TextLabel.title}>Nombre</Text>
-                      <Text style={TextLabel.desc}>{item.name}</Text>
+                  <TouchableHighlight underlayColor="transparent" onPress={() => handleSeeList(item)}>
+                    <View style={{ flexDirection: 'row' }}>
+                      <View style={{ width: "60%" }}>
+                        <Text style={TextLabel.title}>Nombre</Text>
+                        <Text style={[TextLabel.desc, { textTransform: 'capitalize' }]}>{item.name}</Text>
+                      </View>
+                      <View style={{ width: "40%" }}>
+                        <Text style={TextLabel.title}>Usuario</Text>
+                        <Text style={TextLabel.desc}>{item.username}</Text>
+                      </View>
                     </View>
-                    <View style={{ width: "25%" }}>
-                      <Text style={TextLabel.title}>Usuario</Text>
-                      <Text style={TextLabel.desc}>{item.username}</Text>
-                    </View>
-                    <View style={{ alignItems: "center", width: "25%" }}>
-                      <Text style={TextLabel.title}>Rol</Text>
-                      <Text style={TextLabel.desc}>{getRole(item.role)}</Text>
-                    </View>
-                  </View>
+                  </TouchableHighlight>
                   <View style={{ flexDirection: 'row', borderTopWidth: 1, borderStyle: "dashed", borderColor: "#ddd", marginTop: 5, paddingTop: 3 }}>
-                    <View style={{ width: "75%" }}>
-                      <Text style={TextLabel.title}>Creado</Text>
-                      <Text style={TextLabel.desc}>{viewDate(item.created)}</Text>
-                    </View>
-                    <View style={{ alignItems: "center", width: "25%" }}>
-                      <TouchableHighlight style={{ marginTop: 5, marginRight: 5, width: 100 }} underlayColor="transparent" onPress={() => handleRemove(item)}>
-                        <View style={[Btn.baseSm, { backgroundColor: "#dc3545" }]}>
-                          <Text style={[Btn.textSm, { color: "white" }]}>
-                            <FontAwesome5 size={13} name="trash-alt" />&nbsp;&nbsp;Eliminar
+                    <TouchableHighlight underlayColor="transparent" onPress={() => handleSeeList(item)}>
+                      <View style={{ flexDirection: 'row' }}>
+                        <View style={{ width: "50%" }}>
+                          <Text style={TextLabel.title}>Rol</Text>
+                          <Text style={TextLabel.desc}>{getRole(item.role)}</Text>
+                        </View>
+                        <View style={{ width: "30%" }}>
+                          <Text style={TextLabel.title}>Creado</Text>
+                          <Text style={TextLabel.desc}>{viewDate(item.created)}</Text>
+                        </View>
+                      </View>
+                    </TouchableHighlight>
+                    <View style={{ width: "20%", flexDirection: "row", justifyContent: "flex-end" }}>
+                      <TouchableHighlight style={{ marginTop: 5 }} underlayColor="transparent" onPress={() => handleRemove(item)}>
+                        <View style={[Btn.baseSm, { backgroundColor: colorDanger }]}>
+                          <Text style={[Btn.textSm, { color: "white", textAlign: "center" }]}>
+                            &nbsp;&nbsp;<FontAwesome5 size={13} name="trash-alt" />&nbsp;&nbsp;
                           </Text>
                         </View>
                       </TouchableHighlight>

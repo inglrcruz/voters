@@ -60,6 +60,11 @@ function RootLayoutNav() {
               title: 'Agregar Usuario', headerTintColor: colorTextHeader,
               headerStyle: { backgroundColor: colorBase }
             }} />
+            <Stack.Screen name="result-by-user" options={{
+              presentation: 'modal',
+              title: 'Resultado de Usuario', headerTintColor: colorTextHeader,
+              headerStyle: { backgroundColor: colorBase }
+            }} />
             <Stack.Screen name="see-polling-station" options={{
               presentation: 'modal', headerTintColor: colorTextHeader,
               headerStyle: { backgroundColor: colorBase }

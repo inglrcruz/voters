@@ -8,7 +8,7 @@ import { Btn, Container, TextLabel } from "../../constants/Styles"
 import { Text, View } from "../../components/Themed"
 import { confirmAlert } from "../../constants/Alert"
 import { router } from 'expo-router'
-import { identificationCard } from "../../constants/Utilities"
+import { identificationCard, numFormat, sumCount } from "../../constants/Utilities"
 
 type VoteProps = {
     voters: any;
@@ -37,9 +37,18 @@ const SeePollingStationLayout = ({ setRemove, voters }: VoteProps) => {
 
     return (
         <>
-            <Stack.Screen options={{ title: 'Mesa electoral ' + voters.details[0]?.code }} />
+            <Stack.Screen options={{ title: 'Lista de votantes' }} />
             <View style={Container.base}>
-                <Text style={TextLabel.titleHeader}>Lista de votantes</Text>
+                <View style={Container.headTotal}>
+                    <View style={{ flexDirection: "row", marginRight: 10 }}>
+                        <Text style={[TextLabel.titleHeader, { marginTop: 0, marginRight: 5 }]}>Mesa:</Text>
+                        <Text style={TextLabel.titleDesc}>{voters.details[0]?.code}</Text>
+                    </View>
+                    <View style={{ flexDirection: "row" }}>
+                        <Text style={[TextLabel.titleHeader, { marginTop: 0, marginRight: 5 }]}>Total de votantes:</Text>
+                        <Text style={TextLabel.titleDesc}>{numFormat(voters.details.length)}</Text>
+                    </View>
+                </View>
                 <ScrollView horizontal={false} style={Container.scroll}>
                     {
                         voters.details && voters.details.map((item: any, key: number) => {
@@ -47,8 +56,8 @@ const SeePollingStationLayout = ({ setRemove, voters }: VoteProps) => {
                                 <View style={Container.people} key={key}>
                                     <View style={{ flexDirection: 'row' }}>
                                         <View style={{ width: "50%" }}>
-                                            <Text style={TextLabel.title}>Nombre Completo</Text>
-                                            <Text style={TextLabel.desc}>{item.full_name}</Text>
+                                            <Text style={TextLabel.title}>Nombre</Text>
+                                            <Text style={[TextLabel.desc, { textTransform: 'capitalize' }]}>{item.full_name}</Text>
                                         </View>
                                         <View style={{ width: "30%" }}>
                                             <Text style={TextLabel.title}>Cédula</Text>

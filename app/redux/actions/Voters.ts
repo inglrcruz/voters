@@ -103,4 +103,26 @@ const getTotal = () => async (dispatch: any, getState: any) => {
     }
 }
 
-export default { getAllByCode, getTotal, setRemove, setVoter }
+/**
+ * Fetches the total for a specific user identified by UID.
+ * 
+ * @param {string} uid - User ID for which the total is requested.
+ * @returns {Promise} A Promise that resolves with the total data or rejects with an error.
+ */
+const getTotalByUser = (uid: string) => async (dispatch: any, getState: any) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const { user } = getState()
+            dispatch(configStage({ loading: true }))
+            const resp = await get(`voter/total/${uid}`, user.auth.token)
+            resolve(resp.data)
+        } catch (error: any) {
+            reject(error)
+            errorResponse(error)
+        } finally {
+            dispatch(configStage({ loading: false }))
+        }
+    })
+}
+
+export default { getAllByCode, getTotal, getTotalByUser, setRemove, setVoter }

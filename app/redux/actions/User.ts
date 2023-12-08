@@ -144,7 +144,6 @@ const getList = () => async (dispatch: any, getState: any) => {
     })
 }
 
-
 /**
  * Signs off the user by dispatching an action to clear authentication data.
  */

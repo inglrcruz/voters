@@ -114,7 +114,7 @@ const SignInLayout = ({ user, setAuth, setSignOff }: AuthProps) => {
                 </View>
             </View>
             <Text style={TextLabel.footer}>
-                © Copyright {new Date().getFullYear()} Todos los derechos reservados. Versión 1.0
+                © Copyright {new Date().getFullYear()} Todos los derechos reservados. Versión {process.env.EXPO_PUBLIC_VERSION}
             </Text>
         </View>
     )

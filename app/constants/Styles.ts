@@ -7,12 +7,21 @@ const window = Dimensions.get('window')
  */
 export const Container = StyleSheet.create({
     scroll: {
-        flex: 1
+        flex: 1,
     },
     base: {
         flex: 1,
         backgroundColor: "#f9fafc",
         padding: 10
+    },
+    headTotal: {
+        flexDirection: "row",
+        borderBottomWidth: 1,
+        borderBottomColor: "#ddd",
+        borderStyle: "dashed",
+        paddingBottom: 5,
+        marginBottom: 10,
+        backgroundColor: "transparent"
     },
     people: {
         padding: 10,
@@ -42,13 +51,12 @@ export const Container = StyleSheet.create({
         borderLeftColor: "#ffc107"
     },
     voterLine: {
-        borderWidth: 1,
-        borderColor: "#ddd",
-        borderStyle: "dashed",
-        borderTopWidth: 0,
-        borderBottomWidth: 0
+        borderLeftWidth: 1,
+        borderLeftColor: "#ddd",
+        borderStyle: "dashed"
     },
     login: {
+        width: "80%",
         alignSelf: "center",
         backgroundColor: "white",
         padding: 20,
@@ -126,6 +134,10 @@ export const TextLabel = StyleSheet.create({
         fontSize: 15,
         fontWeight: 'bold',
         marginTop: 5
+    },
+    titleDesc: {
+        fontSize: 15,
+        textTransform: 'capitalize'
     },
     title: {
         fontSize: 13,

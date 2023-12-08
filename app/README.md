@@ -14,6 +14,6 @@ $ yarn android
 ## Build
 
 ```bash
-# local build
+# local build app
 $ eas build -p android --profile preview --local
 ```

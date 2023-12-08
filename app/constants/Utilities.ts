@@ -38,3 +38,24 @@ export const identificationCard = (idCard: string) => {
     ]
     return parts.join("-")
 }
+
+/**
+ * Sums the 'count' property in the given list of objects.
+ * 
+ * @param list - An array of objects with a 'count' property.
+ * @returns The total sum of 'count' values.
+ */
+export const sumCount = (list: any) => {
+    const resp: any = list.reduce((a: any, c: any) => a + c.count, 0)
+    return numFormat(resp)
+}
+
+/**
+ * Formats a number using the Intl.NumberFormat with the "en-IN" locale.
+ * 
+ * @param n - The number to be formatted.
+ * @returns A formatted string representing the given number.
+ */
+export const numFormat = (n: number) => {
+    return new Intl.NumberFormat("en-IN").format(n)
+}

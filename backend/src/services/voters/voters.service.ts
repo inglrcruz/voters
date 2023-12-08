@@ -62,10 +62,66 @@ export class VotersService {
    * @returns A Promise that resolves to an array containing aggregated data on electoral centers and enclosures.
    */
   async findTotal(uid: string, role: string) {
-    let match = (role === "user") ? { uid: new Types.ObjectId(uid) } : {}
+    const match = (role === "user") ? { uid: new Types.ObjectId(uid) } : {}
     return await this.vtMd.aggregate([
       {
         $match: match
+      }, {
+        $lookup: {
+          "from": "electoral-centers",
+          "localField": "ecid",
+          "foreignField": "_id",
+          "as": "electoral_centers"
+        }
+      }, {
+        $unwind: "$electoral_centers"
+      }, {
+        $project: {
+          ecid: "$ecid",
+          code: "$electoral_centers.code",
+          eid: "$electoral_centers.eid"
+        }
+      },
+      {
+        $lookup: {
+          "from": "enclosures",
+          "localField": "eid",
+          "foreignField": "_id",
+          "as": "enclosures"
+        }
+      }, {
+        $unwind: "$enclosures"
+      }, {
+        $project: {
+          ecid: "$ecid",
+          code: "$code",
+          description: "$enclosures.description"
+        }
+      },
+      {
+        $group: {
+          _id: "$code",
+          ecid: { $first: "$ecid" },
+          code: { $first: "$code" },
+          description: { $first: "$description" },
+          count: { $sum: 1 }
+        }
+      }, {
+        $sort: { code: 1 }
+      }
+    ])
+  }
+
+  /**
+   * Retrieves the total count of records aggregated by electoral center code for a given user.
+   * 
+   * @param uid - User ID
+   * @returns {Promise<Array>} - A Promise that resolves to an array containing aggregated data.
+   */
+  async findTotalByUsr(uid: string) {
+    return await this.vtMd.aggregate([
+      {
+        $match: { uid: new Types.ObjectId(uid) }
       }, {
         $lookup: {
           "from": "electoral-centers",

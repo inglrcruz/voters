@@ -7,7 +7,6 @@ import ElectoralCenterAction from '../../redux/actions/Electoral-Center'
 import { router } from 'expo-router'
 import { Container, TextFiled } from '../../constants/Styles'
 import { Button, Text, View } from '../../components/Themed'
-import { confirmAlert } from "../../constants/Alert"
 
 type FrmTable = {
     full_name?: string
@@ -81,7 +80,7 @@ const AddVoterLayout = ({ setVoter, getListElectCenter }: VoteProps) => {
     return (
         <View style={Container.base}>
             <View style={TextFiled.base}>
-                <Text style={TextFiled.text}>Nombre Completo:</Text>
+                <Text style={TextFiled.text}>Nombre:</Text>
                 <TextInput
                     style={TextFiled.textInput}
                     value={frmData.full_name}

@@ -1,4 +1,3 @@
-import { Dimensions } from "react-native"
 import { Text, View } from "./Themed"
 import { FontAwesome5 } from '@expo/vector-icons'
 import { Container } from "../constants/Styles"
