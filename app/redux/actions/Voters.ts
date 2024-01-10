@@ -1,6 +1,6 @@
 import { configStage } from '../slices/Config'
 import { votersStage } from '../slices/Voters'
-import { errorResponse, get, post, remove } from '../../constants/Requests'
+import { errorResponse, get, patch, post, remove } from '../../constants/Requests'
 import { errorAlert } from '../../constants/Alert'
 
 /**
@@ -17,6 +17,46 @@ const setVoter = (form: any) => async (dispatch: any, getState: any) => {
             dispatch(configStage({ loading: true }))
             const resp = await post(`voter`, form, user.auth.token)
             dispatch(votersStage({ list: [...voters.list, resp] }))
+            resolve(true)
+        } catch (error: any) {
+            if (error?.response?.status === 400) {
+                const { message } = error?.response?.data
+                errorAlert("Error al guardar", message)
+            } else {
+                errorResponse(error)
+            }
+            reject(error)
+        } finally {
+            dispatch(configStage({ loading: false }))
+        }
+    })
+}
+
+/**
+ * Updates a voter's information in the backend and updates the local state.
+ *
+ * @param id - The ID of the voter to update.
+ * @param form - An object containing the updated voter information (full_name, address, ecid).
+ * @returns A Promise that resolves to true if the update is successful, or rejects with an error.
+ */
+const setUpdVoter = (id: string, form: any) => async (dispatch: any, getState: any) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const { user, voters } = getState()
+            dispatch(configStage({ loading: true }))
+            await patch(`voter/${id}`, form, user.auth.token)
+            const details = voters.details.map((r: any) => {
+                if (r._id === id) {
+                    return {
+                        ...r,
+                        full_name: form.full_name,
+                        address: form.address,
+                        ecid: form.ecid
+                    }
+                }
+                return r
+            })
+            dispatch(votersStage({ details }))
             resolve(true)
         } catch (error: any) {
             if (error?.response?.status === 400) {
@@ -125,4 +165,4 @@ const getTotalByUser = (uid: string) => async (dispatch: any, getState: any) => 
     })
 }
 
-export default { getAllByCode, getTotal, getTotalByUser, setRemove, setVoter }
+export default { getAllByCode, getTotal, getTotalByUser, setRemove, setVoter, setUpdVoter }

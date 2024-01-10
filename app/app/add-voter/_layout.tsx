@@ -4,11 +4,13 @@ import { TextInput } from 'react-native'
 import { Picker } from '@react-native-picker/picker'
 import VotersAction from '../../redux/actions/Voters'
 import ElectoralCenterAction from '../../redux/actions/Electoral-Center'
-import { router } from 'expo-router'
+import { Stack, router, useLocalSearchParams } from 'expo-router'
 import { Container, TextFiled } from '../../constants/Styles'
 import { Button, Text, View } from '../../components/Themed'
+import { identificationCard } from "../../constants/Utilities"
 
 type FrmTable = {
+    _id?: string
     full_name?: string
     identification_card?: string
     address?: string
@@ -23,23 +25,38 @@ type LstElectTable = {
 
 type VoteProps = {
     setVoter: (form: FrmTable) => void;
+    setUpdVoter: (id: string, form: FrmTable) => void;
     getListElectCenter: () => void;
 }
 
-const AddVoterLayout = ({ setVoter, getListElectCenter }: VoteProps) => {
+type Items = {
+    _id: string
+    full_name: string
+    identification_card: string
+    address: string
+    code: string
+}
 
-    const [frmData, setFrmData] = useState<FrmTable>({})
+const AddVoterLayout = ({ setVoter, setUpdVoter, getListElectCenter }: VoteProps) => {
+
+    const [frmData, setFrmData] = useState<FrmTable>({ _id: "" })
     const [errors, setErrors] = useState<Partial<FrmTable>>({})
     const [lstElecTable, setLstElecTable] = useState<LstElectTable[]>([])
+    const params: Items = useLocalSearchParams()
 
     /**
      * useEffect hook to fetch and set the list of electoral centers.
      */
     useEffect(() => {
+
         async function fetchData() {
             const resp: any = await getListElectCenter()
             setLstElecTable(resp)
+            if (params && params._id) {
+                setFrmData({ ...params, ecid: resp.filter((r: LstElectTable) => r.code === params.code)[0]._id })
+            }
         }
+
         fetchData()
     }, [])
 
@@ -71,65 +88,80 @@ const AddVoterLayout = ({ setVoter, getListElectCenter }: VoteProps) => {
             if ((typeof form[field] === "string" && !form[field].trim()) || !form[field]) newErrors[field] = `* ${ERROR_MESSAGES[field]} es requerido.`;
         }
         if (!Object.keys(newErrors).length) {
-            await setVoter(frmData)
-            router.replace('/tabs')
+            if (frmData._id) {
+                const { _id, full_name, address, ecid } = frmData
+                await setUpdVoter(frmData._id, {
+                    full_name,
+                    address,
+                    ecid
+                })
+                router.back()
+            } else {
+                await setVoter(frmData)
+                router.replace('/tabs')
+            }
         }
         setErrors(newErrors)
     }
 
     return (
-        <View style={Container.base}>
-            <View style={TextFiled.base}>
-                <Text style={TextFiled.text}>Nombre:</Text>
-                <TextInput
-                    style={TextFiled.textInput}
-                    value={frmData.full_name}
-                    placeholder="Escribe el nombre de la votante..."
-                    onChangeText={(txt) => handleChange(txt, 'full_name')}
-                />
-                {errors.full_name && <Text style={TextFiled.textError}>{errors.full_name}</Text>}
-            </View>
-            <View style={TextFiled.base}>
-                <Text style={TextFiled.text}>Cédula:</Text>
-                <TextInput
-                    keyboardType="numeric"
-                    maxLength={11}
-                    style={TextFiled.textInput}
-                    value={frmData.identification_card}
-                    placeholder="###-#######-#"
-                    onChangeText={(txt) => handleChange(txt, 'identification_card')}
-                />
-                {errors.identification_card && <Text style={TextFiled.textError}>{errors.identification_card}</Text>}
-            </View>
-            <View style={TextFiled.base}>
-                <Text style={TextFiled.text}>Dirección:</Text>
-                <TextInput
-                    multiline
-                    numberOfLines={2}
-                    style={TextFiled.textInput}
-                    value={frmData.address}
-                    placeholder="Escribe la dirección de la votante..."
-                    onChangeText={(txt) => handleChange(txt, 'address')}
-                />
-                {errors.address && <Text style={TextFiled.textError}>{errors.address}</Text>}
-            </View>
-            <View style={TextFiled.base}>
-                <Text style={TextFiled.text}>Mesa Electoral:</Text>
-                <View style={{ borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
-                    <Picker
-                        placeholder="Seleccione la mesa electoral..."
-                        selectedValue={frmData.ecid}
-                        onValueChange={(val) => handleChange(val, 'ecid')}>
-                        <Picker.Item style={{ color: "#9f9f9f", fontSize: 14 }} label="Seleccione la mesa electoral..." value="" />
-                        {lstElecTable && lstElecTable.map((row: LstElectTable, key: number) => <Picker.Item key={key} value={row._id} label={row.code + " - " + row.description} />)}
-                    </Picker>
+        <>
+            <Stack.Screen options={{ title: (frmData._id) ? `Editar Votante #${identificationCard(frmData.identification_card || "")}` : 'Agregar Votante' }} />
+            <View style={Container.base}>
+                <View style={TextFiled.base}>
+                    <Text style={TextFiled.text}>Nombre:</Text>
+                    <TextInput
+                        style={TextFiled.textInput}
+                        value={frmData.full_name}
+                        placeholder="Escribe el nombre de la votante..."
+                        onChangeText={(txt) => handleChange(txt, 'full_name')}
+                    />
+                    {errors.full_name && <Text style={TextFiled.textError}>{errors.full_name}</Text>}
                 </View>
-                {errors.ecid && <Text style={TextFiled.textError}>{errors.ecid}</Text>}
+                { !frmData._id &&
+                    <View style={TextFiled.base}>
+                        <Text style={TextFiled.text}>Cédula:</Text>
+                        <TextInput
+                            keyboardType="numeric"
+                            maxLength={11}
+                            style={TextFiled.textInput}
+                            value={frmData.identification_card}
+                            placeholder="###-#######-#"
+                            onChangeText={(txt) => handleChange(txt, 'identification_card')}
+                        />
+                        {errors.identification_card && <Text style={TextFiled.textError}>{errors.identification_card}</Text>}
+                    </View>
+                }
+                <View style={TextFiled.base}>
+                    <Text style={TextFiled.text}>Dirección:</Text>
+                    <TextInput
+                        multiline
+                        numberOfLines={2}
+                        style={TextFiled.textInput}
+                        value={frmData.address}
+                        placeholder="Escribe la dirección de la votante..."
+                        onChangeText={(txt) => handleChange(txt, 'address')}
+                    />
+                    {errors.address && <Text style={TextFiled.textError}>{errors.address}</Text>}
+                </View>
+                <View style={TextFiled.base}>
+                    <Text style={TextFiled.text}>Mesa Electoral:</Text>
+                    <View style={{ borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
+                        <Picker
+                            placeholder="Seleccione la mesa electoral..."
+                            selectedValue={frmData.ecid}
+                            onValueChange={(val) => handleChange(val, 'ecid')}>
+                            <Picker.Item style={{ color: "#9f9f9f", fontSize: 14 }} label="Seleccione la mesa electoral..." value="" />
+                            {lstElecTable && lstElecTable.map((row: LstElectTable, key: number) => <Picker.Item style={{ fontSize: 14 }} key={key} value={row._id} label={row.code + " - " + row.description} />)}
+                        </Picker>
+                    </View>
+                    {errors.ecid && <Text style={TextFiled.textError}>{errors.ecid}</Text>}
+                </View>
+                <View style={[TextFiled.base, { width: 150, alignSelf: "center", marginTop: 10 }]}>
+                    <Button title="Guardar" icon="check" type="success" onPress={handleSubmit} />
+                </View>
             </View>
-            <View style={[TextFiled.base, { width: 150, alignSelf: "center", marginTop: 10 }]}>
-                <Button title="Guardar" icon="check" type="success" onPress={handleSubmit} />
-            </View>
-        </View>
+        </>
     )
 }
 

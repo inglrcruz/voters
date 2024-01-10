@@ -189,7 +189,10 @@ export class VotersService {
    * @throws NotFoundException if no voter is found with the given ID.
    */
   async update(id: string, updVtDto: any) {
-    const { matchedCount } = await this.vtMd.updateOne({ _id: new Types.ObjectId(id) }, updVtDto, { new: true });
+    const { matchedCount } = await this.vtMd.updateOne({ _id: new Types.ObjectId(id) }, {
+      ...updVtDto,
+      ecid: new Types.ObjectId(updVtDto.ecid)
+    }, { new: true });
     if (matchedCount === 0) throw new NotFoundException(`Voter with id "${id}" not found`)
   }
 

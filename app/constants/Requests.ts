@@ -21,7 +21,8 @@ export const post = (route: string, params: object, token: string = ""): Promise
  * @param {object} params 
  * @returns {Promise<any>}
  */
-export const patch = (route: string, params: object): Promise<any> => {
+export const patch = (route: string, params: object, token: string = ""): Promise<any> => {
+    if (token) axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
     return axios.patch(url + route, params)
 }
 
