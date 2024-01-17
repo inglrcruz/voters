@@ -1,15 +1,15 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { FontAwesome5 } from '@expo/vector-icons'
 import { connect } from 'react-redux'
 import UserActions from '../../redux/actions/User'
-import { ScrollView, TouchableHighlight } from "react-native"
-import { Btn, Container, TextLabel } from "../../constants/Styles"
+import { ScrollView, TouchableHighlight, TextInput } from "react-native"
+import { Btn, Container, TextFiled, TextLabel } from "../../constants/Styles"
 import { Text, View } from "../../components/Themed"
 import { confirmAlert } from "../../constants/Alert"
 import { router } from 'expo-router'
 import { getRole, viewDate } from "../../constants/Utilities"
 import NoRecords from "../../components/NoRecords"
-import { colorDanger, colorSecondary } from "../../constants/Colors"
+import { colorDanger } from "../../constants/Colors"
 
 type UserProps = {
   user: any;
@@ -17,7 +17,14 @@ type UserProps = {
   setRemove: (id: string) => void;
 }
 
+type FrmTable = {
+  search: string
+  filtered: any
+}
+
 const TabUsersScreen = ({ getList, setRemove, user }: UserProps) => {
+
+  const [frmData, setFrmData] = useState<FrmTable>({ search: "", filtered: user.list })
 
   /**
    * useEffect to fetch and set the list on component mount.
@@ -28,7 +35,16 @@ const TabUsersScreen = ({ getList, setRemove, user }: UserProps) => {
   }, [])
 
   /**
+   * Updates the form data with the filtered user list whenever 
+   * the user.list dependency changes.
+   */
+  useEffect(() => {
+    setFrmData({ ...frmData, filtered: user.list })
+  }, [user.list])
+
+  /**
    * Handles the removal of a user.
+   * 
    * @param item The user object to be removed.
    */
   const handleRemove = async (item: any) => {
@@ -49,14 +65,30 @@ const TabUsersScreen = ({ getList, setRemove, user }: UserProps) => {
     router.push({ pathname: "/result-by-user", params: { uid: user._id, name: user.name } })
   }
 
+  /**
+   * Handles the search functionality by updating the form data with the provided search term
+   * and filtering the user list based on the 'name' property.
+   *
+   * @param {string} search - The search term to filter the user list.
+   */
+  const handleSearch = (search: string) => {
+    setFrmData({ search, filtered: user.list.filter((item: any) => item.name.toLowerCase().includes(search.toLowerCase())) })
+  }
+
   return (
     <>
       <View style={Container.base}>
-        {user.list.length > 0 && <Text style={TextLabel.titleHeader}>Lista de usuario ({user.list && user.list.length})</Text>}
+        <TextInput
+          style={TextFiled.textInputDefault}
+          value={frmData.search}
+          placeholder="Buscar usuario por nombre..."
+          onChangeText={(txt) => handleSearch(txt)}
+        />
+        {frmData.filtered.length > 0 && <Text style={TextLabel.titleHeader}>Lista de usuario ({frmData.filtered && frmData.filtered.length})</Text>}
         <ScrollView horizontal={false} style={Container.scroll}>
-          {user.list.length === 0 && <NoRecords />}
+          {frmData.filtered.length === 0 && <NoRecords />}
           {
-            user.list && user.list.map((item: any, key: number) => {
+            frmData.filtered && frmData.filtered.map((item: any, key: number) => {
               return (
                 <View style={Container.people} key={key}>
                   <TouchableHighlight underlayColor="transparent" onPress={() => handleSeeList(item)}>

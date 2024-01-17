@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { Voter } from 'src/entities/voter.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
+import { User } from 'src/entities/user.entity';
 
 @Injectable()
 export class VotersService {
@@ -20,21 +21,22 @@ export class VotersService {
     try {
       return await this.vtMd.create(crtVtDto)
     } catch (error) {
-      if (error.code === 11000) {
-        throw new BadRequestException(`Ya existe un votante con este número de cédula.`)
-      }
+      if (error.code === 11000) throw new BadRequestException(`Ya existe un votante con este número de cédula.`)
     }
   }
 
   /**
-   * Finds and returns all records in the database that match the given code.
-   * 
-   * @param ecid - The code to search for in the 'ecid' field.
-   * @returns A promise that resolves to an array of matching records.
+   * Finds all records in the database based on the provided electoral center ID and user information.
+   *
+   * @param ecid - Electoral center ID for filtering records.
+   * @param usr - User object containing information like role and user ID for additional filtering.
+   * @returns An array of aggregated records with selected fields.
    */
-  async findAll(ecid: string) {
+  async findAll(ecid: string, usr: User) {
+    const match: any = { ecid: new Types.ObjectId(ecid) }
+    if (usr.role === "user") match.uid = usr._id
     return await this.vtMd.aggregate([{
-      $match: { ecid: new Types.ObjectId(ecid) }
+      $match: match
     }, {
       $lookup: {
         "from": "electoral-centers",
@@ -49,6 +51,7 @@ export class VotersService {
         full_name: "$full_name",
         identification_card: "$identification_card",
         address: "$address",
+        phone: "$phone",
         code: "$ecid.code"
       }
     }])

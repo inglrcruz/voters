@@ -74,6 +74,10 @@ const TabProfileScreen = ({ user, getProfile, setSignOff }: ProfileProps) => {
         <Text style={TextLabel.title}>Creado</Text>
         <Text>{viewDate(frm.created)}</Text>
       </View>
+      <View style={[Container.separator, { alignItems: "center" }]}>
+        <Text style={TextLabel.title}>Versión de la aplicación</Text>
+        <Text>{process.env.EXPO_PUBLIC_VERSION}</Text>
+      </View>
       <View style={{ marginTop: 20, width: 300, alignSelf: "center" }}>
         <Button icon="lock"
           title="Cambiar contraseña"

@@ -124,6 +124,19 @@ export const TextFiled = StyleSheet.create({
         borderBottomColor: '#ccc',
         padding: 5,
         backgroundColor: "#fff"
+    }, 
+    textInputDefault: {
+        borderWidth: 1,
+        borderColor: '#ccc',
+        padding: 5,
+        paddingLeft: 10,
+        borderRadius: 5,
+        backgroundColor: "#fff",
+        shadowColor: '#333',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 2,
+        elevation: 2
     }
 })
 

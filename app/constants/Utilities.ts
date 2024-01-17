@@ -40,6 +40,19 @@ export const identificationCard = (idCard: string) => {
 }
 
 /**
+ * Formats a phone number to the pattern (###) ###-####
+ * 
+ * @param {string} number - The input phone number to be formatted.
+ * @returns {string} - The formatted phone number.
+ */
+export const phoneNumber = (number: string) => {
+    const cleaned = ('' + number).replace(/\D/g, '');
+    const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+    if (match) return '(' + match[1] + ') ' + match[2] + '-' + match[3];
+    return number;
+}
+
+/**
  * Sums the 'count' property in the given list of objects.
  * 
  * @param list - An array of objects with a 'count' property.

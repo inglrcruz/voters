@@ -51,6 +51,7 @@ const setUpdVoter = (id: string, form: any) => async (dispatch: any, getState: a
                         ...r,
                         full_name: form.full_name,
                         address: form.address,
+                        phone: form.phone,
                         ecid: form.ecid
                     }
                 }

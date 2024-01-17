@@ -13,6 +13,7 @@ type FrmTable = {
     _id?: string
     full_name?: string
     identification_card?: string
+    phone?: string
     address?: string
     ecid?: string
 }
@@ -87,13 +88,15 @@ const AddVoterLayout = ({ setVoter, setUpdVoter, getListElectCenter }: VoteProps
         for (const field in ERROR_MESSAGES) {
             if ((typeof form[field] === "string" && !form[field].trim()) || !form[field]) newErrors[field] = `* ${ERROR_MESSAGES[field]} es requerido.`;
         }
+        if (!newErrors['identification_card'] && form.identification_card.length !== 11) newErrors['identification_card'] = "El número de cédula es incorrecto."
+        if (form.phone && form.phone.length !== 10) newErrors['phone'] = "El número de teléfono es incorrecto."
         if (!Object.keys(newErrors).length) {
-            const { _id, full_name, identification_card, address, ecid } = frmData
+            const { _id, full_name, identification_card, phone, address, ecid } = frmData
             if (_id) {
-                await setUpdVoter(_id, { full_name, address, ecid })
+                await setUpdVoter(_id, { full_name, address, phone, ecid })
                 router.back()
             } else {
-                await setVoter({ full_name, identification_card, address, ecid })
+                await setVoter({ full_name, identification_card, address, phone, ecid })
                 router.replace('/tabs')
             }
         }
@@ -109,12 +112,12 @@ const AddVoterLayout = ({ setVoter, setUpdVoter, getListElectCenter }: VoteProps
                     <TextInput
                         style={TextFiled.textInput}
                         value={frmData.full_name}
-                        placeholder="Escribe el nombre de la votante..."
+                        placeholder="Escribe el nombre del votante..."
                         onChangeText={(txt) => handleChange(txt, 'full_name')}
                     />
                     {errors.full_name && <Text style={TextFiled.textError}>{errors.full_name}</Text>}
                 </View>
-                { !frmData._id &&
+                {!frmData._id &&
                     <View style={TextFiled.base}>
                         <Text style={TextFiled.text}>Cédula:</Text>
                         <TextInput
@@ -128,6 +131,18 @@ const AddVoterLayout = ({ setVoter, setUpdVoter, getListElectCenter }: VoteProps
                         {errors.identification_card && <Text style={TextFiled.textError}>{errors.identification_card}</Text>}
                     </View>
                 }
+                <View style={TextFiled.base}>
+                    <Text style={TextFiled.text}>Número de teléfono (Opcional):</Text>
+                    <TextInput
+                        keyboardType="numeric"
+                        maxLength={10}
+                        style={TextFiled.textInput}
+                        value={frmData.phone}
+                        placeholder="(###) ###-####"
+                        onChangeText={(txt) => handleChange(txt, 'phone')}
+                    />
+                    {errors.phone && <Text style={TextFiled.textError}>{errors.phone}</Text>}
+                </View>
                 <View style={TextFiled.base}>
                     <Text style={TextFiled.text}>Dirección:</Text>
                     <TextInput

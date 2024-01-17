@@ -12,6 +12,9 @@ export class Voter extends Document {
     @Prop({ type: String, required: true, unique: true, index: true })
     identification_card: String;
 
+    @Prop({ type: String })
+    phone: String;
+
     @Prop({ type: String, required: true })
     address: String;
 

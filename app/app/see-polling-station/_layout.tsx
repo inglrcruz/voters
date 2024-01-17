@@ -8,7 +8,7 @@ import { Btn, Container, TextLabel } from "../../constants/Styles"
 import { Text, View } from "../../components/Themed"
 import { confirmAlert } from "../../constants/Alert"
 
-import { identificationCard, numFormat } from "../../constants/Utilities"
+import { identificationCard, numFormat, phoneNumber } from "../../constants/Utilities"
 
 type VoteProps = {
     voters: any;
@@ -72,22 +72,27 @@ const SeePollingStationLayout = ({ setRemove, voters }: VoteProps) => {
                                             <Text style={TextLabel.title}>Cédula</Text>
                                             <Text style={TextLabel.desc}>{identificationCard(item.identification_card)}</Text>
                                         </View>
-                                        <View style={{ alignItems: "center", width: "20%" }}>
-                                            <TouchableHighlight style={{ marginTop: 5 }} underlayColor="transparent" onPress={() => handleEdit(item)}>
+
+                                    </View>
+                                    <View style={[Container.address, { flexDirection: 'row' }]}>
+                                        <View style={{ width: "100%" }}>
+                                            <Text style={TextLabel.title}>Dirección</Text>
+                                            <Text style={TextLabel.desc}>{item.address}</Text>
+                                        </View>
+                                    </View>
+                                    <View style={[Container.address, { flexDirection: 'row' }]}>
+                                        <View style={{ width: "60%" }}>
+                                            <Text style={TextLabel.title}>Número de teléfono</Text>
+                                            <Text style={TextLabel.desc}>{item.phone ? phoneNumber(item.phone) : "-"}</Text>
+                                        </View>
+                                        <View style={{ flexDirection: 'row', width: "40%", justifyContent: 'flex-end' }}>
+                                            <TouchableHighlight style={{ marginTop: 5, marginRight: 10 }} underlayColor="transparent" onPress={() => handleEdit(item)}>
                                                 <View style={[Btn.baseSm, { backgroundColor: "#fff", maxWidth: 50 }]}>
                                                     <Text style={[Btn.textSm, { color: "#333", width: "100%", textAlign: "center" }]}>
                                                         <FontAwesome5 size={15} name="edit" />
                                                     </Text>
                                                 </View>
                                             </TouchableHighlight>
-                                        </View>
-                                    </View>
-                                    <View style={[Container.address, { flexDirection: 'row' }]}>
-                                        <View style={{ width: "80%" }}>
-                                            <Text style={TextLabel.title}>Dirección</Text>
-                                            <Text style={TextLabel.desc}>{item.address}</Text>
-                                        </View>
-                                        <View style={{ alignItems: "center", width: "20%" }}>
                                             <TouchableHighlight style={{ marginTop: 5 }} underlayColor="transparent" onPress={() => handleRemove(item)}>
                                                 <View style={[Btn.baseSm, { backgroundColor: "#dc3545", maxWidth: 50 }]}>
                                                     <Text style={[Btn.textSm, { color: "white", width: "100%", textAlign: "center" }]}>
