@@ -40,10 +40,6 @@ const TabUsersScreen = ({ getList, setRemove, user }: UserProps) => {
     }])
   }
 
-  const handleEdit = async (item: any) => {
-
-  }
-
   /**
    * Navigates to the "/result-by-user" route, passing user information as parameters.
    * 
@@ -56,7 +52,7 @@ const TabUsersScreen = ({ getList, setRemove, user }: UserProps) => {
   return (
     <>
       <View style={Container.base}>
-        {user.list.length > 0 && <Text style={TextLabel.titleHeader}>Lista de usuario</Text>}
+        {user.list.length > 0 && <Text style={TextLabel.titleHeader}>Lista de usuario ({user.list && user.list.length})</Text>}
         <ScrollView horizontal={false} style={Container.scroll}>
           {user.list.length === 0 && <NoRecords />}
           {

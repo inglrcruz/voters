@@ -2,7 +2,7 @@ import moment from 'moment'
 
 export const ROLES = [
     { id: "admin", label: "Administrador" },
-    { id: "user", label: "Usuario" }
+    { id: "user", label: "Multiplicador" }
 ]
 
 /**

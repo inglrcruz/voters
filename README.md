@@ -1,5 +1,5 @@
 # voters
-Aplicación desarrollada con NestJS, React Native, TypeScript y MongoDB, diseñada específicamente para el registro de potenciales potenciales.
+Application developed with NestJS, React Native, TypeScript, and MongoDB, specifically designed for the registration of potential prospects.
 
 ## App folder
 

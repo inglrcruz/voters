@@ -1,5 +1,6 @@
 import { configStage } from '../slices/Config'
 import { usrStage } from '../slices/User'
+import { votersStage } from '../slices/Voters'
 import { get, post, patch, remove, errorResponse } from '../../constants/Requests'
 import { errorAlert } from '../../constants/Alert'
 
@@ -149,6 +150,8 @@ const getList = () => async (dispatch: any, getState: any) => {
  */
 const setSignOff = () => async (dispatch: any) => {
     dispatch(usrStage({ auth: null }))
+    dispatch(votersStage({ list: [], details: [] }))
+
 }
 
 export default { setAuth, setSignOff, getProfile, setChangePassword, getList, setUser, setRemove }

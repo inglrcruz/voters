@@ -56,7 +56,8 @@ export const Container = StyleSheet.create({
         borderStyle: "dashed"
     },
     login: {
-        width: "80%",
+        width: "85%",
+        maxWidth: 400,
         alignSelf: "center",
         backgroundColor: "white",
         padding: 20,
@@ -97,7 +98,7 @@ export const Container = StyleSheet.create({
     },
     noRecords: {
         flex: 1,
-        height: window.height - 150,
+        height: window.height - 190,
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "transparent"

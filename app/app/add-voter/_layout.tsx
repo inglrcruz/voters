@@ -88,16 +88,12 @@ const AddVoterLayout = ({ setVoter, setUpdVoter, getListElectCenter }: VoteProps
             if ((typeof form[field] === "string" && !form[field].trim()) || !form[field]) newErrors[field] = `* ${ERROR_MESSAGES[field]} es requerido.`;
         }
         if (!Object.keys(newErrors).length) {
-            if (frmData._id) {
-                const { _id, full_name, address, ecid } = frmData
-                await setUpdVoter(frmData._id, {
-                    full_name,
-                    address,
-                    ecid
-                })
+            const { _id, full_name, identification_card, address, ecid } = frmData
+            if (_id) {
+                await setUpdVoter(_id, { full_name, address, ecid })
                 router.back()
             } else {
-                await setVoter(frmData)
+                await setVoter({ full_name, identification_card, address, ecid })
                 router.replace('/tabs')
             }
         }

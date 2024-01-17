@@ -67,7 +67,6 @@ const TableResults = ({ voters, getAllByCode }: TabRestProps) => {
                                                     <Text style={TextLabel.votersLabel}>Total</Text>
                                                     <Text style={{ fontSize: 13 }}>{numFormat(item.count)}</Text>
                                                 </View>
-
                                             </View>
                                         </TouchableHighlight>
                                     )
