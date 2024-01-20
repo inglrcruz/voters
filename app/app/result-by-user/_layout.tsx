@@ -39,7 +39,7 @@ const ResultByUserLayout = ({ getTotalByUser }: SeePollStaProps) => {
                         <Text style={TextLabel.titleDesc}>{name}</Text>
                     </View>
                     <View style={{ flexDirection: "row" }}>
-                        <Text style={[TextLabel.titleHeader, { marginTop: 0, marginRight: 5 }]}>Total de votantes:</Text>
+                        <Text style={[TextLabel.titleHeader, { marginTop: 0, marginRight: 5 }]}>Total:</Text>
                         <Text style={TextLabel.titleDesc}>{sumCount(list)}</Text>
                     </View>
                 </View>

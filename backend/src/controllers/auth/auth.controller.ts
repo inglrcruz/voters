@@ -22,8 +22,8 @@ export class AuthController {
    */
   @Post()
   async auth(@Body() authDto: AuthDto) {
-    const { _id, role } = await this.usrSrv.auth(authDto)
-    return { token: this.jwtSrv.sign({ id: _id }), role }
+    const { _id, role, username } = await this.usrSrv.auth(authDto)
+    return { token: this.jwtSrv.sign({ id: _id }), role, username }
   }
 
   /**

@@ -117,13 +117,15 @@ const TabUsersScreen = ({ getList, setRemove, user }: UserProps) => {
                       </View>
                     </TouchableHighlight>
                     <View style={{ width: "20%", flexDirection: "row", justifyContent: "flex-end" }}>
+                      { item.remove && 
                       <TouchableHighlight style={{ marginTop: 5 }} underlayColor="transparent" onPress={() => handleRemove(item)}>
-                        <View style={[Btn.baseSm, { backgroundColor: colorDanger }]}>
-                          <Text style={[Btn.textSm, { color: "white", textAlign: "center" }]}>
-                            &nbsp;&nbsp;<FontAwesome5 size={13} name="trash-alt" />&nbsp;&nbsp;
-                          </Text>
-                        </View>
-                      </TouchableHighlight>
+                      <View style={[Btn.baseSm, { backgroundColor: colorDanger }]}>
+                        <Text style={[Btn.textSm, { color: "white", textAlign: "center" }]}>
+                          &nbsp;&nbsp;<FontAwesome5 size={13} name="trash-alt" />&nbsp;&nbsp;
+                        </Text>
+                      </View>
+                    </TouchableHighlight>
+                    }
                     </View>
                   </View>
                 </View>)

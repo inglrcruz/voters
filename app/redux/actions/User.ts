@@ -133,7 +133,10 @@ const getList = () => async (dispatch: any, getState: any) => {
             const { user } = getState()
             dispatch(configStage({ loading: true }))
             const resp = await get(`user/list`, user.auth.token)
-            const list = resp.data.reverse()
+            const list = resp.data.reverse().map((item: any) => ({
+                ...item,
+                remove: item.username === user.auth.username ? false : true
+            }));
             dispatch(usrStage({ list: list }))
             resolve(list)
         } catch (error: any) {

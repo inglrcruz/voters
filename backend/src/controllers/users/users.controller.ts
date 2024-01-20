@@ -39,8 +39,8 @@ export class UsersController {
    * @returns A list of all users.
    */
   @Get('list')
-  async findAll(@GetUser() usr: User) {
-    return await this.usrSrv.findAll(usr);
+  async findAll() {
+    return await this.usrSrv.findAll();
   }
 
   /**

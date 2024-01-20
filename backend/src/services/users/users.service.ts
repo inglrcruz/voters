@@ -44,13 +44,11 @@ export class UsersService {
 
   /**
    * Finds all users except the specified user.
-   * 
-   * @param usr - The user to exclude from the results.
+   *
    * @returns {Promise<any[]>} - A promise that resolves to an array of users.
    */
-  async findAll(usr: any) {
-    const lst = await this.usrMd.find()
-    return lst.filter((i: any) => String(i._id) !== String(usr._id))
+  async findAll() {
+    return await this.usrMd.find()
   }
 
   /**

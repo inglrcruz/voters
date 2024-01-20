@@ -105,7 +105,7 @@ const AddVoterLayout = ({ setVoter, setUpdVoter, getListElectCenter }: VoteProps
 
     return (
         <>
-            <Stack.Screen options={{ title: (frmData._id) ? `Editar Votante #${identificationCard(frmData.identification_card || "")}` : 'Agregar Votante' }} />
+            <Stack.Screen options={{ title: (frmData._id) ? `Editar ID: ${identificationCard(frmData.identification_card || "")}` : 'Agregar Votante' }} />
             <View style={Container.base}>
                 <View style={TextFiled.base}>
                     <Text style={TextFiled.text}>Nombre:</Text>
