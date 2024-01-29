@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from "react"
 import { connect } from 'react-redux'
-import { FontAwesome5 } from '@expo/vector-icons'
 import { ScrollView, TouchableHighlight } from "react-native"
-import { Btn, Container, TextLabel } from "../constants/Styles"
+import { Container, TextLabel } from "../constants/Styles"
 import votersAction from '../redux/actions/Voters'
 import { Text, View } from "../components/Themed"
 import NoRecords from "./NoRecords"
 import { router } from 'expo-router'
-import { colorSecondary } from "../constants/Colors"
 import { numFormat } from "../constants/Utilities"
 
 type TabRestProps = {
     voters: any;
-    getAllByCode: (code: string) => void;
+    uid: any;
+    getAllByCode: (code: string, uid: string) => void;
 }
 
-const TableResults = ({ voters, getAllByCode }: TabRestProps) => {
+const TableResults = ({ voters, uid, getAllByCode }: TabRestProps) => {
 
     const [list, setList] = useState([])
 
@@ -39,7 +38,7 @@ const TableResults = ({ voters, getAllByCode }: TabRestProps) => {
      * @param {any} item - The item triggering the view action.
      */
     const handleView = async (item: any) => {
-        await getAllByCode(item.ecid)
+        await getAllByCode(item.ecid, uid)
         router.push('/see-polling-station')
     }
 

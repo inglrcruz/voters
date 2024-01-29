@@ -2,10 +2,10 @@
   "expo": {
     "name": "Votantes",
     "slug": "voters",
-    "version": "1.0.0",
+    "version": "1.8.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "voters",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash.png",

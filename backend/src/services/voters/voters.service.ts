@@ -32,9 +32,10 @@ export class VotersService {
    * @param usr - User object containing information like role and user ID for additional filtering.
    * @returns An array of aggregated records with selected fields.
    */
-  async findAll(ecid: string, usr: User) {
+  async findAll(ecid: string, usr: User, uid: string) {
     const match: any = { ecid: new Types.ObjectId(ecid) }
     if (usr.role === "user") match.uid = usr._id
+    if (uid) match.uid = new Types.ObjectId(uid)
     return await this.vtMd.aggregate([{
       $match: match
     }, {

@@ -28,9 +28,10 @@ export class VotersController {
    * @param usr - The authenticated user obtained through the GetUser decorator.
    * @returns A list of all voters.
    */
-  @Get('list/:code')
-  async findAll(@Param('code') code: string, @GetUser() usr: User) {
-    return await this.vtSrv.findAll(code, usr)
+  @Get('list/:code/:uid?')
+  async findAll(@Param('code') code: string, @Param('uid') uid: string, @GetUser() usr: User) {
+
+    return await this.vtSrv.findAll(code, usr, uid)
   }
 
   /**

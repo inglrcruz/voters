@@ -43,7 +43,7 @@ const ResultByUserLayout = ({ getTotalByUser }: SeePollStaProps) => {
                         <Text style={TextLabel.titleDesc}>{sumCount(list)}</Text>
                     </View>
                 </View>
-                <TableResults voters={list} />
+                <TableResults voters={list} uid={uid} />
             </View>
         </>
     )

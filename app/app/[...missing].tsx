@@ -1,39 +1,39 @@
-import { Link, Stack } from 'expo-router';
-import { StyleSheet } from 'react-native';
-import { Text, View } from '../components/Themed';
+import { StyleSheet } from 'react-native'
+import { Button, Text, View } from '../components/Themed'
+import { colorBase } from '../constants/Colors'
+import { Container, TextFiled } from '../constants/Styles'
+import { Image } from 'react-native'
+import { router } from 'expo-router'
 
-export default function NotFoundScreen() {
+const NotFoundScreen = () => {
+
+  const handleSubmit = async () => {
+    router.replace('/tabs')
+  }
+
   return (
-    <>
-      <Stack.Screen options={{ title: 'Oops!' }} />
-      <View style={styles.container}>
-        <Text style={styles.title}>This screen doesn't exist.</Text>
-
-        <Link href="/" style={styles.link}>
-          <Text style={styles.linkText}>Go to home screen!</Text>
-        </Link>
+    <View style={styles.container}>
+      <Image style={Container.logo} source={require('../assets/images/logo.jpg')} />
+      <Text style={styles.title}>Pedimos disculpas, pero lamentablemente no podemos encontrar la pantalla que estás buscando en este momento.</Text>
+      <View style={[TextFiled.base, { width: 250, alignSelf: "center", marginTop: 20 }]}>
+        <Button title="Ir atrás" icon="arrow-left" type="success" onPress={handleSubmit} />
       </View>
-    </>
-  );
+    </View>
+  )
 }
+
+export default NotFoundScreen
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
+    backgroundColor: colorBase,
+    justifyContent: 'center'
   },
   title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  link: {
-    marginTop: 15,
-    paddingVertical: 15,
-  },
-  linkText: {
-    fontSize: 14,
-    color: '#2e78b7',
+    color: 'white',
+    fontSize: 18,
+    margin: 10,
+    textAlign: 'center'
   }
 });

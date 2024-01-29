@@ -107,12 +107,13 @@ const setRemove = (id: string) => async (dispatch: any, getState: any) => {
  * @param dispatch - The dispatch function for updating the state.
  * @returns {Promise} A Promise that resolves with the response data upon success, or rejects with an error.
  */
-const getAllByCode = (code: string) => async (dispatch: any, getState: any) => {
+const getAllByCode = (code: string, usr: any = "") => async (dispatch: any, getState: any) => {
     return new Promise(async (resolve, reject) => {
         try {
             const { user } = getState()
             dispatch(configStage({ loading: true }))
-            const resp = await get(`voter/list/${code}`, user.auth.token)
+            const params = (usr) ? `${code}/${usr}` : `${code}`
+            const resp = await get(`voter/list/${params}`, user.auth.token)
             const list = resp.data.reverse()
             dispatch(votersStage({ details: list }))
             resolve(list)
