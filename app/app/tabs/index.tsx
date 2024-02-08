@@ -1,4 +1,4 @@
-import React, { useCallback } from "react"
+import React, { Suspense, useCallback } from "react"
 import { connect } from 'react-redux'
 import { Text, View } from "../../components/Themed"
 import { Container, TextLabel } from "../../constants/Styles"
